@@ -10,6 +10,7 @@ export default function RouteGuard({ children }) {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("route guard ran");
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         if (location.pathname.startsWith("/auth")) {
