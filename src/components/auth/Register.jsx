@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { TextInput, Title, Button, Stack, Divider, Paper } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { handleRegister } from "../../firebase/firebaseAuth";
 
-export default function Register({ classes }) {
+export default function Register({ classes, handleRegister }) {
   const form = useForm({
     initialValues: {
       username: "",
@@ -24,13 +23,15 @@ export default function Register({ classes }) {
     },
   });
 
+  const handleSubmit = (values) => {
+    handleRegister(values.email, values.password);
+  };
+
   return (
     <Paper className={classes.paper}>
-      <Title order={1} className={classes.title}>
-        Register
-      </Title>
+      <Title className={classes.title}>Register</Title>
 
-      <form onSubmit={form.onSubmit((values) => handleRegister(values.email, values.password))} className={classes.form}>
+      <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
         <TextInput withAsterisk aria-label="Username" placeholder="Username" {...form.getInputProps("username")} className={classes.input} />
         <TextInput withAsterisk aria-label="Email" placeholder="Email address" {...form.getInputProps("email")} className={classes.input} />
         <TextInput withAsterisk aria-label="Password" placeholder="Password" {...form.getInputProps("password")} className={classes.input} />

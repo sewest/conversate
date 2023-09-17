@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { TextInput, Title, Button, Stack, Divider, Paper } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { handleRecover } from "../../firebase/firebaseAuth";
 
-export default function Recover({ classes }) {
+export default function Recover({ classes, handleRecover }) {
   const form = useForm({
     initialValues: {
       email: "",
@@ -13,12 +12,16 @@ export default function Recover({ classes }) {
     },
   });
 
+  const handleSubmit = (values) => {
+    handleRecover(values.email);
+  };
+
   return (
     <Paper className={classes.paper}>
       <Title order={1} className={classes.title}>
         Recover Password
       </Title>
-      <form onSubmit={form.onSubmit((values) => handleRecover(values.email))} className={classes.form}>
+      <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
         <TextInput withAsterisk aria-label="Email" placeholder="Email address" {...form.getInputProps("email")} className={classes.input} />
         <Stack className={classes.stack}>
           <Button type="submit" className={classes.button}>

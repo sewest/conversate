@@ -1,33 +1,26 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import Spinner from "../spinner/Spinner";
 
-export default function RouteGuard({ children }) {
+export default function RouteGuard({ children, onAuthStateChanged }) {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    console.log("route guard ran");
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (location.pathname.startsWith("/auth")) {
-          navigate("/");
-        }
-      } else {
-        if (!location.pathname.startsWith("/auth")) {
-          navigate("/auth/login");
-        }
+      if (user && location.pathname.startsWith("/auth")) {
+        navigate("/");
+      } else if (!user && !location.pathname.startsWith("/auth")) {
+        navigate("/auth/login");
       }
-      setIsLoading(false); // Set loading state to false after authentication check
+      setIsLoading(false);
     });
 
-    return () => unsubscribe();
+    return unsubscribe; // Just return the unsubscribe function directly
   }, [navigate, location.pathname]);
 
-  // Show loading state while checking authentication
   if (isLoading) {
     return <Spinner />;
   }

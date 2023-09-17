@@ -4,17 +4,17 @@ import Register from "./Register";
 import Login from "./Login";
 import Recover from "./Recover";
 
-export default function AuthForm() {
+export default function AuthForm({ handleLogin, handleRecover, handleRegister }) {
   const { authType } = useParams();
   const { classes } = useStyles();
 
   switch (authType) {
     case "register":
-      return <Register classes={classes} />;
+      return <Register classes={classes} handleRegister={handleRegister} />;
     case "login":
-      return <Login classes={classes} />;
+      return <Login classes={classes} handleLogin={handleLogin} />;
     case "recover":
-      return <Recover classes={classes} />;
+      return <Recover classes={classes} handleRecover={handleRecover} />;
     default:
       throw new Error("404 Page not found");
   }
