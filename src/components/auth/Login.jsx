@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { TextInput, Title, Button, Stack, Divider, Paper } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import classes from "./authForm.module.css";
 
-export default function Login({ classes, handleLogin }) {
+export default function Login({ handleLogin }) {
   const form = useForm({
     initialValues: {
       email: "",
@@ -20,7 +21,7 @@ export default function Login({ classes, handleLogin }) {
 
   return (
     <Paper className={classes.paper}>
-      <Title order={1} className={classes.title}>
+      <Title data-testid="login-form-header" order={1} className={classes.title}>
         Login
       </Title>
       <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
@@ -30,12 +31,12 @@ export default function Login({ classes, handleLogin }) {
           <Button type="submit" className={classes.button}>
             Login
           </Button>
-          <Button component={Link} to="/auth/recover" variant="subtle" compact className={classes.button}>
-            Forgot password?
-          </Button>
           <Divider className={classes.divider} />
           <Button component={Link} to="/auth/register" variant="outline" className={classes.button}>
             Register
+          </Button>
+          <Button component={Link} to="/auth/recover" variant="outline" className={classes.button}>
+            Forgot password?
           </Button>
         </Stack>
       </form>

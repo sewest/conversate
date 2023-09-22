@@ -12,6 +12,7 @@ export default function RouteGuard({ children, onAuthStateChanged }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && location.pathname.startsWith("/auth")) {
         navigate("/");
+        console.log(user);
       } else if (!user && !location.pathname.startsWith("/auth")) {
         navigate("/auth/login");
       }

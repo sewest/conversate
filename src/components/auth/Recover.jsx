@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { TextInput, Title, Button, Stack, Divider, Paper } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import classes from "./authForm.module.css";
 
-export default function Recover({ classes, handleRecover }) {
+export default function Recover({ handleRecover }) {
   const form = useForm({
     initialValues: {
       email: "",
@@ -30,6 +31,9 @@ export default function Recover({ classes, handleRecover }) {
           <Divider className={classes.divider} />
           <Button component={Link} to="/auth/login" variant="outline" className={classes.button}>
             Login
+          </Button>
+          <Button component={Link} to="/auth/register" variant="outline" className={classes.button}>
+            Register
           </Button>
         </Stack>
       </form>

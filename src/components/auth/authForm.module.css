@@ -1,0 +1,38 @@
+.paper {
+  padding: var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.form {
+  gap: var(--mantine-spacing-xs);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 12.5rem;
+}
+
+.title {
+  text-align: center;
+}
+
+.input {
+  width: 100%;
+}
+
+.stack {
+  gap: var(--mantine-spacing-sm);
+  width: 100%;
+}
+
+.divider {
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+}

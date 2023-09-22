@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { TextInput, Title, Button, Stack, Divider, Paper } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import classes from "./authForm.module.css";
 
-export default function Register({ classes, handleRegister }) {
+export default function Register({ handleRegister }) {
   const form = useForm({
     initialValues: {
       username: "",
@@ -39,12 +40,12 @@ export default function Register({ classes, handleRegister }) {
           <Button type="submit" className={classes.button}>
             Register
           </Button>
-          <Button component={Link} to="/auth/recover" variant="subtle" compact className={classes.button}>
-            Forgot password?
-          </Button>
           <Divider className={classes.divider} />
           <Button component={Link} to="/auth/login" variant="outline" className={classes.button}>
             Login
+          </Button>
+          <Button component={Link} to="/auth/recover" variant="outline" className={classes.button}>
+            Forgot password?
           </Button>
         </Stack>
       </form>

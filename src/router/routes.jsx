@@ -6,7 +6,7 @@ import HomePage from "../pages/HomePage";
 import RouteGuard from "../components/auth/RouteGuard";
 import { onAuthStateChanged } from "firebase/auth";
 
-export const router = createBrowserRouter([
+export const routes = [
   {
     path: "",
     element: (
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "",
+        path: "/",
         element: <HomePage />,
       },
       {
@@ -26,4 +26,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
