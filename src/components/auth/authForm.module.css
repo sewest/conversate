@@ -1,3 +1,4 @@
+/* These styles are shared for all auth forms */
 .paper {
   padding: var(--mantine-spacing-md);
   gap: var(--mantine-spacing-xl);

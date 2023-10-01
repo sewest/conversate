@@ -1,6 +1,6 @@
 import { handleLogin, handleRecover, handleRegister } from "../firebase/firebaseAuth";
-import AuthForm from "../components/auth/AuthForm";
+import AuthFormMain from "../components/auth/AuthFormMain";
 
 export default function AuthPage() {
-  return <AuthForm handleLogin={handleLogin} handleRecover={handleRecover} handleRegister={handleRegister} />;
+  return <AuthFormMain handleLogin={handleLogin} handleRecover={handleRecover} handleRegister={handleRegister} />;
 }

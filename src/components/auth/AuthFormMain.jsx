@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import Register from "./Register";
-import Login from "./Login";
-import Recover from "./Recover";
+import Register from "./register/Register";
+import Login from "./login/Login";
+import Recover from "./recover/Recover";
 
 export default function AuthForm({ handleLogin, handleRecover, handleRegister }) {
   const { authType } = useParams();
