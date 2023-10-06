@@ -1,5 +1,5 @@
 import { vi, it, describe, expect } from "vitest";
-import { createMemoryRouter, RouterProvider, useLocation } from "react-router-dom";
+import { createMemoryRouter, RouterProvider, useLocation, useNavigate } from "react-router-dom";
 import { render, screen, userEvent, waitFor } from "../../../../test-utils";
 import { onAuthStateChanged } from "firebase/auth";
 import { routes } from "../../../router/routes";
@@ -37,6 +37,7 @@ vi.mock("../../spinner/Spinner", () => {
   };
 });
 
+//Tests for the route guard
 describe("RouteGuard", () => {
   it("renders the spinner when isLoading is true", () => {
     useLocation.mockReturnValue({ pathname: "/" });
@@ -46,75 +47,74 @@ describe("RouteGuard", () => {
       </RouterProvider>
     );
     expect(screen.getByTestId("spinner")).toBeInTheDocument();
-    // expect(screen.queryByText("Login")).not.toBeInTheDocument();
   });
 
-  // it("renders children when loading is false", () => {
+  it("redirects the user to '/' when user is authenticated and location starts with '/auth'", async () => {
+    const mockNavigate = vi.fn();
 
-  // })
+    useNavigate.mockImplementation(() => mockNavigate);
+    useLocation.mockReturnValue({ pathname: "/auth" });
+    onAuthStateChanged.mockImplementation((auth, callback) => {
+      callback({ user: "testUser" });
+    });
+
+    render(
+      <RouterProvider router={createMemoryRouter(routes)}>
+        <RouteGuard></RouteGuard>
+      </RouterProvider>
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+  });
+
+  it("redirects the user to '/auth/login' when user is not authenticated and the location does not start with '/auth'", async () => {
+    const mockNavigate = vi.fn();
+    useNavigate.mockImplementation(() => mockNavigate);
+    useLocation.mockReturnValue({ pathname: "/" });
+    onAuthStateChanged.mockImplementation((auth, callback) => {
+      callback(null);
+    });
+
+    render(
+      <RouterProvider router={createMemoryRouter(routes)}>
+        <RouteGuard></RouteGuard>
+      </RouterProvider>
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith("/auth/login");
+  });
+
+  it("does not redirect the user if they are authenticated and they are navigating to a non '/auth' route", async () => {
+    const mockNavigate = vi.fn();
+    useNavigate.mockImplementation(() => mockNavigate);
+    useLocation.mockReturnValue({ pathname: "/" });
+    onAuthStateChanged.mockImplementation((auth, callback) => {
+      callback({ user: "testUser" });
+    });
+
+    render(
+      <RouterProvider router={createMemoryRouter(routes)}>
+        <RouteGuard></RouteGuard>
+      </RouterProvider>
+    );
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it("does not redirect the user if they are not authenticated and they are navigating to an '/auth' route", async () => {
+    const mockNavigate = vi.fn();
+    useNavigate.mockImplementation(() => mockNavigate);
+    useLocation.mockReturnValue({ pathname: "/auth" });
+    onAuthStateChanged.mockImplementation((auth, callback) => {
+      callback(null);
+    });
+
+    render(
+      <RouterProvider router={createMemoryRouter(routes)}>
+        <RouteGuard></RouteGuard>
+      </RouterProvider>
+    );
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
 });
-
-///////////////////// GPT Suggested Tests ////////////////////////
-// import { render, screen } from 'vitest';
-// import { useNavigate, useLocation } from 'react-router-dom';
-// import { auth } from '../../../firebase/firebase';
-// import RouteGuard from './RouteGuard';
-
-// // Mock Firebase authentication
-// jest.mock('firebase/auth', () => {
-//   return {
-//     onAuthStateChanged: jest.fn(),
-//   };
-// });
-
-// // Mock the Spinner component
-// jest.mock('../../spinner/Spinner', () => {
-//   return function MockSpinner() {
-//     return <div data-testid="spinner">Spinner</div>;
-//   };
-// });
-
-// // Mock useNavigate and useLocation
-// jest.mock('react-router-dom', () => {
-//   return {
-//     useNavigate: jest.fn(),
-//     useLocation: jest.fn(),
-//   };
-// });
-
-// describe('RouteGuard', () => {
-//   it('renders Spinner when isLoading is true', () => {
-//     useLocation.mockReturnValue({ pathname: '/some-path' });
-//     const { unmount } = render(<RouteGuard />);
-//     expect(screen.getByTestId('spinner')).toBeInTheDocument();
-//     unmount();
-//   });
-
-//   it('renders children when isLoading is false', () => {
-//     useLocation.mockReturnValue({ pathname: '/some-path' });
-//     const { unmount } = render(<RouteGuard>Child Content</RouteGuard>);
-//     expect(screen.queryByTestId('spinner')).toBeNull();
-//     expect(screen.getByText('Child Content')).toBeInTheDocument();
-//     unmount();
-//   });
-
-//   it('navigates to /auth/login when user is not authenticated and location does not start with /auth', () => {
-//     useNavigate.mockImplementation(() => jest.fn());
-//     useLocation.mockReturnValue({ pathname: '/some-path' });
-//     onAuthStateChanged.mockImplementation((auth, callback) => {
-//       callback(null); // Simulate no authenticated user
-//     });
-//     render(<RouteGuard />);
-//     expect(useNavigate).toHaveBeenCalledWith('/auth/login');
-//   });
-
-//   it('navigates to / when user is authenticated and location starts with /auth', () => {
-//     useNavigate.mockImplementation(() => jest.fn());
-//     useLocation.mockReturnValue({ pathname: '/auth/profile' });
-//     onAuthStateChanged.mockImplementation((auth, callback) => {
-//       callback({}); // Simulate an authenticated user
-//     });
-//     render(<RouteGuard />);
-//     expect(useNavigate).toHaveBeenCalledWith('/');
-//   });
-// });

@@ -21,7 +21,7 @@ export default function Login({ handleLogin }) {
 
   return (
     <Paper className={classes.paper}>
-      <Title data-testid="login-form-header" order={1} className={classes.title}>
+      <Title order={1} className={classes.title}>
         Login
       </Title>
       <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
