@@ -45,7 +45,7 @@ export const handleRecover = async (email) => {
       color: "red",
       autoClose: 5000,
     });
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -53,6 +53,12 @@ export const handleSignOut = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    console.log(error);
+    notifications.show({
+      title: "Uh oh.",
+      message: "Something went wrong while trying to sign out.",
+      color: "red",
+      autoClose: 5000,
+    });
+    console.error(error);
   }
 };
